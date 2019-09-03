@@ -1,6 +1,6 @@
 {
     "name": "cybalex/test_helpers",
-    "description": "Collection of helper classes for phpunit",
+    "description": "Collection of helper classes for phpunit testing enhancement",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Cybalex\\TestHelpers\n\\": "src/"
+            "Cybalex\\TestHelpers\\": "src/"
         }
     },
     "minimum-stability": "stable"
