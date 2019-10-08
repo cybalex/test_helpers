@@ -4,29 +4,33 @@ namespace Cybalex\TestHelpers;
 
 use PHPUnit\Framework\MockObject\MockBuilder;
 
-Trait GettersAndSettersTestTrait
+/**
+ * @author Zymovets Oleksii <cybalex87@gmail.com>
+ */
+trait GettersAndSettersTestTrait
 {
     use TestHelperConstraintTrait;
 
     /**
+     * The tested entity object.
+     *
      * @var object
      */
     protected $entity;
 
     /**
-     * GettersAndSettersTestTrait constructor.
+     * This method is called before the first test of this test class is run.
      *
-     * @param null $name
-     * @param array $data
-     * @param string $dataName
+     * @codeCoverageIgnore
      */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public static function setUpBeforeClass(): void
     {
-        parent::__construct($name, $data, $dataName);
-
-        $this->checkContext();
+        static::checkContext();
     }
 
+    /**
+     * This method is called before each test.
+     */
     public function setUp(): void
     {
         /** @var MockBuilder $mockBuilder */
@@ -39,11 +43,12 @@ Trait GettersAndSettersTestTrait
     }
 
     /**
-     * Data provider for testing getter and setter methods of an entity
+     * Data provider for testing getter and setter methods of an entity.
      *
      * Usage example:
      * return [
      *   ['name', 'John'],
+     *   ['iq', 90.75, 91, ['setterName' => 'setIqRounded', 'getterName' => 'getIqRounded', 'chainCall' => false]]
      * ];
      * Result: this will test the following:
      *   1/ $entity->setName('John')  will return the instance of $entity (chain call test)
@@ -51,26 +56,41 @@ Trait GettersAndSettersTestTrait
      *
      * @return array
      */
-    abstract function gettersAndSettersDataProvider(): array;
+    abstract public function gettersAndSettersDataProvider(): array;
 
-    abstract function getEntityClass();
+    /**
+     * Return the name of the tested class.
+     * Usage example:
+     *   return User::class;.
+     *
+     * @return string
+     */
+    abstract public function getEntityClass(): string;
 
     /**
      * @dataProvider gettersAndSettersDataProvider
+     *
      * @param string $propertyName
-     * @param mixed $value
+     * @param mixed  $setValue
+     * @param mixed  $getValue
+     * @param array  $options
      */
-    public function testGettersAndSetters(string $propertyName, $value)
+    public function testGettersAndSetters(string $propertyName, $setValue, $getValue = null, array $options = [])
     {
-        $setter = 'set'.ucfirst($propertyName);
-        $getter = 'get'.ucfirst($propertyName);
+        $setter = \array_key_exists('setterName', $options) ? $options['setterName'] : 'set'.ucfirst($propertyName);
+        $getter = \array_key_exists('getterName', $options) ? $options['getterName'] : 'get'.ucfirst($propertyName);
 
-        $this->assertSame($this->entity, $this->entity->$setter($value));
-        $this->assertEquals($value, $this->entity->$getter());
+        if (\array_key_exists('chainCall', $options) && false === $options['chainCall']) {
+            $this->entity->$setter($setValue);
+        } else {
+            $this->assertSame($this->entity, $this->entity->$setter($setValue));
+        }
+
+        $this->assertSame($getValue ?? $setValue, $this->entity->$getter());
     }
 
     /**
-     * Override this method to pass constructor arguments to entity
+     * Override this method to pass constructor arguments to entity.
      *
      * @return array
      */
@@ -80,9 +100,11 @@ Trait GettersAndSettersTestTrait
     }
 
     /**
+     * Override this method to mock methods of entity.
+     *
      * Example:
-     * Override this method to mock methods of entity
-     * return ['getName']
+     *   return ['getName']
+     *
      * getName method of entity will be mocked
      *
      * @return array

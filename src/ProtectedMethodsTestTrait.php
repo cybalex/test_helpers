@@ -5,38 +5,29 @@ namespace Cybalex\TestHelpers;
 use ReflectionClass;
 use ReflectionException;
 
+/**
+ * @author Zymovets Oleksii <cybalex87@gmail.com>
+ */
 trait ProtectedMethodsTestTrait
 {
     use TestHelperConstraintTrait;
 
     /**
-     * ProtectedMethodsTestTrait constructor.
-     *
-     * @param null $name
-     * @param array $data
-     * @param string $dataName
-     */
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        
-        $this->checkContext();
-    }
-
-    /**
      * Call protected method of a class.
      *
-     * @param object $object
+     * @param mixed  $object
      * @param string $methodName
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return mixed
      *
      * @throws ReflectionException
      */
-    public function invokeMethod(object $object, string $methodName, array $parameters = [])
+    public function invokeMethod($object, string $methodName, array $parameters = [])
     {
-        $reflection = new ReflectionClass(get_class($object));
+        $this->checkContext();
+
+        $reflection = new ReflectionClass(\get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
@@ -47,21 +38,20 @@ trait ProtectedMethodsTestTrait
      * Call protected method of a class the given number of times.
      * The number of calls depends on the length of the array of parameters.
      *
-     * @param object $object $object
+     * @param mixed  $object
      * @param string $methodName
-     * @param array $parametersArray An array of arrays of parameters.
+     * @param array  $parametersArray an array of arrays of parameters
      *
-     * @param int $callTimes
-     * @return array Array of method invocation results.
+     * @return array array of method invocation results
      *
      * @throws ReflectionException
      */
     public function invokeMethodConsecutive(
-        object $object,
+        $object,
         string $methodName,
         array $parametersArray
     ): array {
-        $reflection = new ReflectionClass(get_class($object));
+        $reflection = new ReflectionClass(\get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

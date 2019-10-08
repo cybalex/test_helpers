@@ -18,5 +18,13 @@
             "Cybalex\\TestHelpers\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "autoload-dev": {
+        "psr-4": {
+            "Cybalex\\TestHelpers\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15"
+    }
 }
