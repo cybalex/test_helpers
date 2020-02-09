@@ -3,6 +3,7 @@
 namespace Cybalex\TestHelpers\Tests;
 
 use Cybalex\TestHelpers\GettersAndSettersTestTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class StringNormalizer {
@@ -77,6 +78,7 @@ class GettersAndSettersTestTraitUserTest extends TestCase
 {
     use GettersAndSettersTestTrait;
 
+    /** @var StringNormalizer|MockObject */
     private $stringNormalizer;
 
     public function gettersAndSettersDataProvider(): array

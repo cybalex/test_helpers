@@ -10,8 +10,6 @@ use ReflectionException;
  */
 trait ProtectedMethodsTestTrait
 {
-    use TestHelperConstraintTrait;
-
     /**
      * Call protected method of a class.
      *
@@ -25,8 +23,6 @@ trait ProtectedMethodsTestTrait
      */
     public function invokeMethod($object, string $methodName, array $parameters = [])
     {
-        $this->checkContext();
-
         $reflection = new ReflectionClass(\get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);

@@ -9,24 +9,12 @@ use PHPUnit\Framework\MockObject\MockBuilder;
  */
 trait GettersAndSettersTestTrait
 {
-    use TestHelperConstraintTrait;
-
     /**
      * The tested entity object.
      *
      * @var object
      */
     protected $entity;
-
-    /**
-     * This method is called before the first test of this test class is run.
-     *
-     * @codeCoverageIgnore
-     */
-    public static function setUpBeforeClass(): void
-    {
-        static::checkContext();
-    }
 
     protected function gettersAndSetterSetUp(): void
     {

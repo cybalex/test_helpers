@@ -5,6 +5,7 @@ namespace Cybalex\TestHelpers\Tests;
 use Cybalex\TestHelpers\GettersAndSettersTestTrait;
 use Cybalex\TestHelpers\ProtectedMethodsTestTrait;
 use PHPUnit\Framework\TestCase;
+use ReflectionException;
 
 class ProtectedMethodsTestTraitTest extends TestCase
 {
@@ -22,10 +23,18 @@ class ProtectedMethodsTestTraitTest extends TestCase
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testGetConstructorArguments()
     {
         $this->assertEquals([], $this->invokeMethod($this, 'getConstructorArguments'));
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testInvokeMethodConsecutive()
+    {
+        $this->assertEquals([[], []], $this->invokeMethodConsecutive($this, 'getConstructorArguments', [[], []]));
     }
 }
