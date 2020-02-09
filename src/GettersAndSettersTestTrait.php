@@ -28,10 +28,7 @@ trait GettersAndSettersTestTrait
         static::checkContext();
     }
 
-    /**
-     * This method is called before each test.
-     */
-    public function setUp(): void
+    protected function gettersAndSetterSetUp(): void
     {
         /** @var MockBuilder $mockBuilder */
         $mockBuilder = $this->getMockBuilder($this->getEntityClass());
@@ -40,6 +37,14 @@ trait GettersAndSettersTestTrait
             ->setConstructorArgs($this->getConstructorArguments())
             ->getMock()
         ;
+    }
+
+    /**
+     * This method is called before each test.
+     */
+    public function setUp(): void
+    {
+        $this->gettersAndSetterSetUp();
     }
 
     /**
