@@ -16,17 +16,6 @@ trait GettersAndSettersTestTrait
      */
     protected $entity;
 
-    protected function gettersAndSetterSetUp(): void
-    {
-        /** @var MockBuilder $mockBuilder */
-        $mockBuilder = $this->getMockBuilder($this->getEntityClass());
-        $this->entity = $mockBuilder
-            ->addMethods($this->getMockedMethods())
-            ->setConstructorArgs($this->getConstructorArguments())
-            ->getMock()
-        ;
-    }
-
     /**
      * This method is called before each test.
      */
@@ -46,8 +35,6 @@ trait GettersAndSettersTestTrait
      * Result: this will test the following:
      *   1/ $entity->setName('John')  will return the instance of $entity (chain call test)
      *   2/ $entity->getName() will return 'John'
-     *
-     * @return array
      */
     abstract public function gettersAndSettersDataProvider(): array;
 
@@ -55,18 +42,14 @@ trait GettersAndSettersTestTrait
      * Return the name of the tested class.
      * Usage example:
      *   return User::class;.
-     *
-     * @return string
      */
     abstract public function getEntityClass(): string;
 
     /**
      * @dataProvider gettersAndSettersDataProvider
      *
-     * @param string $propertyName
-     * @param mixed  $setValue
-     * @param mixed  $getValue
-     * @param array  $options
+     * @param mixed $setValue
+     * @param mixed $getValue
      */
     public function testGettersAndSetters(string $propertyName, $setValue, $getValue = null, array $options = [])
     {
@@ -82,10 +65,19 @@ trait GettersAndSettersTestTrait
         $this->assertSame($getValue ?? $setValue, $this->entity->$getter());
     }
 
+    protected function gettersAndSetterSetUp(): void
+    {
+        /** @var MockBuilder $mockBuilder */
+        $mockBuilder = $this->getMockBuilder($this->getEntityClass());
+        $this->entity = $mockBuilder
+            ->addMethods($this->getMockedMethods())
+            ->setConstructorArgs($this->getConstructorArguments())
+            ->getMock()
+        ;
+    }
+
     /**
      * Override this method to pass constructor arguments to entity.
-     *
-     * @return array
      */
     protected function getConstructorArguments(): array
     {
@@ -99,8 +91,6 @@ trait GettersAndSettersTestTrait
      *   return ['getName']
      *
      * getName method of entity will be mocked
-     *
-     * @return array
      */
     protected function getMockedMethods(): array
     {
