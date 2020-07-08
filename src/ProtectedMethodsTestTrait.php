@@ -33,6 +33,7 @@ trait ProtectedMethodsTestTrait
      * The number of calls depends on the length of the array of parameters.
      *
      * @param mixed $object
+     * @param string $methodName
      * @param array $parametersArray an array of arrays of parameters
      *
      * @return array array of method invocation results
